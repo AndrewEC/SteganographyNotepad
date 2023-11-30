@@ -1,0 +1,45 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="StackPanel.tabItemContent">
+        <Setter Property="Width" Value="500"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    
+    <Style Selector="TextBlock.settingsLabel">
+        <Setter Property="Width" Value="130"/>
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+
+    <Style Selector="TextBox.settingsInput">
+        <Setter Property="Width" Value="370" />
+    </Style>
+
+    <Style Selector="Button.selectImages">
+        <Setter Property="Width" Value="490" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.imageDisplayName">
+        <Setter Property="Width" Value="263" />
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+
+    <Style Selector="Button.manageCoverImages">
+        <Setter Property="Width" Value="75" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button.loadButton">
+        <Setter Property="Width" Value="500" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+
+    <Style Selector="Button.cleanButton">
+        <Setter Property="Width" Value="500" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+
+</Styles>
