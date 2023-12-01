@@ -1,6 +1,7 @@
 namespace SteganographyNotepad.ViewModels;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive;
 using System.Threading.Tasks;
 using MsBox.Avalonia;
@@ -10,17 +11,33 @@ using SteganographyApp.Common.Arguments;
 using SteganographyApp.Common.IO;
 using SteganographyNotepad.Models;
 using SteganographyNotepad.Store;
+using SteganographyNotepad.Views;
 
+/// <summary>
+/// The view model for <see cref="CleanView"/>.
+/// </summary>
+[SuppressMessage("Ordering Rules", "SA1201", Justification = "Useless Rule")]
 public class CleanViewModel : ReactiveObject
 {
-    public ReactiveCommand<Unit, Unit> CleanImagesCommand { get; }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CleanViewModel"/> class.
+    /// </summary>
     public CleanViewModel()
     {
         CleanImagesCommand = ReactiveCommand.Create(CleanImages);
     }
 
+    /// <summary>
+    /// Gets the command to react to the click of the Clean Images button.
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> CleanImagesCommand { get; }
+
     private bool cleanEnabled = false;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the Clean Images button
+    /// is enabled or disabled.
+    /// </summary>
     public bool CleanEnabled
     {
         get => cleanEnabled;
@@ -28,6 +45,12 @@ public class CleanViewModel : ReactiveObject
     }
 
     private CoverImage[] coverImages = [];
+
+    /// <summary>
+    /// Gets or sets the cover images array.
+    /// <para>This will also attempt to set <see cref="CleanEnabled"/> to true if the new cover images
+    /// array has at least one element. Otherwise, <see cref="CleanEnabled"/> will be set to false.</para>
+    /// </summary>
     public CoverImage[] CoverImages
     {
         get => coverImages;
@@ -38,10 +61,14 @@ public class CleanViewModel : ReactiveObject
         }
     }
 
+    private static Task CleanImagesAsync(IInputArguments arguments) => Task.Run(() => CleanImages(arguments));
+
+    private static void CleanImages(IInputArguments arguments) => new ImageStore(arguments).CleanImages();
+
     private async void CleanImages()
     {
-        var result = await MessageBoxManager.GetMessageBoxStandard("Clean Images",
-            "Cleaning these images will permanently remove any data store in them. Are you sure you want to continue?", ButtonEnum.OkCancel)
+        var result = await MessageBoxManager.GetMessageBoxStandard(
+            "Clean Images", "Cleaning these images will permanently remove any data store in them. Are you sure you want to continue?", ButtonEnum.OkCancel)
             .ShowAsync();
         if (result != ButtonResult.Ok)
         {
@@ -66,7 +93,7 @@ public class CleanViewModel : ReactiveObject
 
     private IInputArguments FormArgumentsForClean()
     {
-        string[] args = Arguments.FormCliArguments(new SettingsModel(){ CoverImages = CoverImages });
+        string[] args = Arguments.FormCliArguments(new SettingsModel() { CoverImages = CoverImages });
         var parser = new CliParser();
         if (!parser.TryParseArgs(out StorageArguments arguments, args))
         {
@@ -74,8 +101,4 @@ public class CleanViewModel : ReactiveObject
         }
         return arguments.ToCommonArguments();
     }
-
-    private static Task CleanImagesAsync(IInputArguments arguments) => Task.Run(() => CleanImages(arguments));
-
-    private static void CleanImages(IInputArguments arguments) => new ImageStore(arguments).CleanImages();
 }

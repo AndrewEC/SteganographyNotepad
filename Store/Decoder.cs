@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 using SteganographyApp.Common.Arguments;
 using SteganographyApp.Common.Data;
-using SteganographyApp.Common.IO;
 using SteganographyApp.Common.Injection;
+using SteganographyApp.Common.IO;
 
-public static class Decoder
+/// <summary>
+/// Utility class to asynchronously decode text content from the cover images.
+/// </summary>
+internal static class Decoder
 {
+    /// <summary>
+    /// Asynchronously decodes the text content from the cover images, specified within the arguments, and returns
+    /// the UTF-8 result.
+    /// </summary>
+    /// <param name="arguments">The arguments used by the <see cref="ImageStore"/> to decode data from the
+    /// cover images.</param>
+    /// <returns>A UTF-8 encoded string read from the cover images.</returns>
     public static Task<string> DecodeTextFromImagesAsync(IInputArguments arguments) => Task.Run(() => DecodeData(arguments));
 
     private static string DecodeData(IInputArguments arguments)

@@ -2,6 +2,7 @@ namespace SteganographyNotepad.ViewModels;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -10,16 +11,19 @@ using Avalonia.Platform.Storage;
 using DynamicData;
 using ReactiveUI;
 using SteganographyNotepad.Models;
+using SteganographyNotepad.Views;
 
+/// <summary>
+/// The view model for <see cref="CoverImageSettingsView"/>.
+/// </summary>
+[SuppressMessage("Ordering Rules", "SA1201", Justification = "Useless Rule")]
 public class CoverImageSettingsViewModel : ReactiveObject
 {
     private const int CharacterLimit = 30;
 
-    public ReactiveCommand<Unit, Unit> SelectImagesClickCommand { get; }
-    public ReactiveCommand<string, Unit> RemoveImageCommand { get; }
-    public ReactiveCommand<string, Unit> MoveImageUpCommand { get; }
-    public ReactiveCommand<string, Unit> MoveImageDownCommand { get; }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CoverImageSettingsViewModel"/> class.
+    /// </summary>
     public CoverImageSettingsViewModel()
     {
         SelectImagesClickCommand = ReactiveCommand.Create(SelectImagesClick);
@@ -28,7 +32,36 @@ public class CoverImageSettingsViewModel : ReactiveObject
         MoveImageDownCommand = ReactiveCommand.Create<string>(MoveImageDown);
     }
 
+    /// <summary>
+    /// Gets the command triggered by the click of the Select Images button that initiates
+    /// the dialog where the user can select images from the file explorer.
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> SelectImagesClickCommand { get; }
+
+    /// <summary>
+    /// Gets the command triggered by the click of the Remove Image button that will attempt
+    /// to remove the associated image from the current array of cover images.
+    /// </summary>
+    public ReactiveCommand<string, Unit> RemoveImageCommand { get; }
+
+    /// <summary>
+    /// Gets the command triggered by the click of the Move Up button that will
+    /// attempt to move the image up towards the beginning of the array of cover images.
+    /// </summary>
+    public ReactiveCommand<string, Unit> MoveImageUpCommand { get; }
+
+    /// <summary>
+    /// Gets the command triggered by the click of the Move Down button that will
+    /// attempt to move the image down towards the end of the array of cover images.
+    /// </summary>
+    public ReactiveCommand<string, Unit> MoveImageDownCommand { get; }
+
     private bool coverImageListVisible = false;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the list element containing the list of cover
+    /// images should be displayed.
+    /// </summary>
     public bool CoverImageListVisible
     {
         get => coverImageListVisible;
@@ -36,6 +69,13 @@ public class CoverImageSettingsViewModel : ReactiveObject
     }
 
     private CoverImage[] coverImages = [];
+
+    /// <summary>
+    /// Gets or sets the cover images array.
+    /// <para> Upon setting the cover images this will also
+    /// attempt to change the cover <see cref="CoverImageListVisible"/> option to true
+    /// if there is more than one cover image in the new array otherwise false. </para>
+    /// </summary>
     public CoverImage[] CoverImages
     {
         get => coverImages;
@@ -46,7 +86,23 @@ public class CoverImageSettingsViewModel : ReactiveObject
         }
     }
 
-    public async void SelectImagesClick()
+    private static FilePickerFileType LosslessImagePicker() => new("Lossless Images")
+    {
+        Patterns = ["*.png", "*.webp"],
+        AppleUniformTypeIdentifiers = ["public.image"],
+        MimeTypes = ["image/*"],
+    };
+
+    private static string DetermineDisplayName(string path)
+    {
+        if (path.Length < CharacterLimit)
+        {
+            return path;
+        }
+        return string.Concat("...", path.AsSpan(path.Length - CharacterLimit));
+    }
+
+    private async void SelectImagesClick()
     {
         string[] files = await SelectFiles();
         if (files.Length == 0)
@@ -75,20 +131,16 @@ public class CoverImageSettingsViewModel : ReactiveObject
             return [];
         }
 
+        IStorageFolder? startLocation = await window.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
+
         IReadOnlyList<IStorageFile> files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             AllowMultiple = true,
-            FileTypeFilter = new List<FilePickerFileType> { LosslessImagePicker() }
+            FileTypeFilter = new List<FilePickerFileType> { LosslessImagePicker() },
+            SuggestedStartLocation = startLocation,
         });
         return new List<IStorageFile>(files).Select(file => file.Path.AbsolutePath.ToString()).ToArray();
     }
-
-    private static FilePickerFileType LosslessImagePicker() => new("Lossless Images")
-    {
-        Patterns = ["*.png", "*.webp"],
-        AppleUniformTypeIdentifiers = ["public.image"],
-        MimeTypes = ["image/*"]
-    };
 
     private void MoveImage(CoverImage coverImage, SwapDirection direction, Predicate<int> canMove)
     {
@@ -124,13 +176,4 @@ public class CoverImageSettingsViewModel : ReactiveObject
 
     private CoverImage FindImageWithPath(string path) => CoverImages.Where(image => image.Path == path).FirstOrDefault()
         ?? throw new Exception($"Could not find cover image with path: [{path}]");
-
-    private static string DetermineDisplayName(string path)
-    {
-        if (path.Length < CharacterLimit)
-        {
-            return path;
-        }
-        return string.Concat("...", path.AsSpan(path.Length - CharacterLimit));
-    }
 }

@@ -6,8 +6,19 @@ using System.Text;
 using SteganographyApp.Common.Arguments;
 using SteganographyNotepad.Models;
 
+/// <summary>
+/// Utility class to convert the <see cref="SettingsModel"/> to a string array
+/// that mirrors how the CLI arguments would look if the SteganographyApp was
+/// being executed from the command line.
+/// </summary>
 public static class Arguments
 {
+    /// <summary>
+    /// Transforms the settings into a string array that replicates how the CLI
+    /// arguments would look if the SteganographyApp would be run from the command line.
+    /// </summary>
+    /// <param name="settings">The settings to be converted into CLI arguments.</param>
+    /// <returns>The CLI arguments in the form of a string array.</returns>
     public static string[] FormCliArguments(SettingsModel settings)
     {
         string imagePaths = string.Join(',', settings.CoverImages.Select(image => image.Path));
