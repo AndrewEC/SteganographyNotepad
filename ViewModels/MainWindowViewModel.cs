@@ -12,7 +12,8 @@ using SteganographyNotepad.Store;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public SettingsViewModel Settings { get; } = new();
+    public CoverImageSettingsViewModel CoverImageSettings { get; } = new();
+    public SettingsViewModel Settings { get; }
     public CleanViewModel CleanSettings { get; } = new();
     public ReactiveCommand<Unit, Unit> LoadTextCommand { get; }
     public ReactiveCommand<Unit, Unit> SaveTextCommand { get; }
@@ -21,7 +22,8 @@ public class MainWindowViewModel : ViewModelBase
     {
         LoadTextCommand = ReactiveCommand.Create(LoadText);
         SaveTextCommand = ReactiveCommand.Create(SaveText);
-        Settings.PropertyChanged += OnPropertyChanged;
+        Settings = new(CoverImageSettings);
+        CoverImageSettings.PropertyChanged += OnPropertyChanged;
     }
 
     private int selectedTabIndex = 0;
@@ -47,12 +49,12 @@ public class MainWindowViewModel : ViewModelBase
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(Settings.CoverImages))
+        if (e.PropertyName != nameof(CoverImageSettings.CoverImages))
         {
             return;
         }
-        IsActionEnabled = Settings.CoverImages.Length > 0;
-        CleanSettings.CoverImages = Settings.CoverImages;
+        IsActionEnabled = CoverImageSettings.CoverImages.Length > 0;
+        CleanSettings.CoverImages = CoverImageSettings.CoverImages;
     }
 
     private async void SaveText()
