@@ -27,7 +27,7 @@ Below are the list of settings and what they do.
 ### Edit Tab
 The edit screen has only two components. A text field where any of you can input your text to save and a single button to save said text to the selected image(s).
 
-Additionally, whenever you click *Load Text* from the *Settings* tab you will automatically be taken to the *Edit Tab* and the input area will automatically be failed with whatever text was loaded from the selected image(s).
+Additionally, whenever you click *Load Text* from the *Settings* tab you will automatically be taken to the *Edit Tab* and the input area will automatically be filled with whatever text was loaded from the selected image(s).
 
 *Note*: By default both of these will be disabled and won't be enabled until you select at least one image using the *Select Images* button from the *Settings* tab.
 
