@@ -35,3 +35,8 @@ Additionally, whenever you click *Load Text* from the *Settings* tab you will au
 The last tab allows you to "clean" the images selected on the *Settings* tab.
 
 The app "cleans" the images by effectively overwriting key parts of the image with random bits of data and effectively destroy the original text saved within the selected image(s).
+
+## Dependencies
+* [SteganographyApp](https://github.com/AndrewEC/SteganographyApp)
+* [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia)
+* [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia)
