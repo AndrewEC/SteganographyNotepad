@@ -25,7 +25,7 @@ Below are the list of settings and what they do.
 * *Additional Hashes* - If provided this will alter the number of times the Password is hashed before being used to encrypt/decrypt the text.
 
 ### Edit Tab
-The edit screen has only two components. A text field where any of you can input your text to save and a single button to save said text to the selected image(s).
+The edit screen has only two components. A text field where can input your text to save and a single button to save said text to the selected image(s).
 
 Additionally, whenever you click *Load Text* from the *Settings* tab you will automatically be taken to the *Edit Tab* and the input area will automatically be filled with whatever text was loaded from the selected image(s).
 
