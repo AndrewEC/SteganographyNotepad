@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-using SteganographyApp.Common.Arguments;
+using SteganographyApp.Common;
 using SteganographyApp.Common.Data;
 using SteganographyApp.Common.Injection;
 using SteganographyApp.Common.IO;

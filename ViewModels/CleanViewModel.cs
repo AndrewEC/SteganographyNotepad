@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using SteganographyApp.Common;
 using SteganographyApp.Common.Arguments;
 using SteganographyApp.Common.IO;
 using SteganographyNotepad.Models;

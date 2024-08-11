@@ -4,7 +4,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using SteganographyApp.Common;
 using SteganographyApp.Common.Arguments;
+using SteganographyApp.Common.Parsers;
 using SteganographyNotepad.Models;
 
 /// <summary>
