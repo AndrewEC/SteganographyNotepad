@@ -15,35 +15,37 @@
         <StyleInclude Source="/Styles/Styles.axaml" />
     </Window.Styles>
 
-    <TabControl HorizontalAlignment="Center" SelectedIndex="{Binding SelectedTabIndex}">
-        <TabItem>
-            <TabItem.Header>
-                <TextBlock>Settings</TextBlock>
-            </TabItem.Header>
-            <StackPanel Classes="tabItemContent" Spacing="10">
-                <view:SettingsView DataContext="{Binding Settings}" />
-                <Button Classes="loadButton" IsEnabled="{Binding IsActionEnabled}" Command="{Binding LoadTextCommand}">Load Text</Button>
-            </StackPanel>
-        </TabItem>
+    <ScrollViewer>
+        <TabControl HorizontalAlignment="Center" SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>Settings</TextBlock>
+                </TabItem.Header>
+                <StackPanel Classes="tabItemContent" Spacing="10">
+                    <view:SettingsView DataContext="{Binding Settings}" />
+                    <Button Classes="loadButton" IsEnabled="{Binding IsActionEnabled}" Command="{Binding LoadTextCommand}">Load Text</Button>
+                </StackPanel>
+            </TabItem>
 
-        <TabItem>
-            <TabItem.Header>
-                <TextBlock>Edit</TextBlock>
-            </TabItem.Header>
-            <StackPanel Classes="tabItemContent">
-                <Button Command="{Binding SaveTextCommand}" IsEnabled="{Binding IsActionEnabled}" Classes="loadButton">Save</Button>
-                <TextBox Text="{Binding TextContent}" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="{Binding IsActionEnabled}" />
-            </StackPanel>
-        </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>Edit</TextBlock>
+                </TabItem.Header>
+                <StackPanel Classes="tabItemContent">
+                    <Button Command="{Binding SaveTextCommand}" IsEnabled="{Binding IsActionEnabled}" Classes="loadButton">Save</Button>
+                    <TextBox Text="{Binding TextContent}" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="{Binding IsActionEnabled}" />
+                </StackPanel>
+            </TabItem>
 
-        <TabItem>
-            <TabItem.Header>
-                <TextBlock>Clean</TextBlock>
-            </TabItem.Header>
-            <StackPanel Classes="tabItemContent">
-                <view:CleanView DataContext="{Binding CleanSettings}" />
-            </StackPanel>
-        </TabItem>
-    </TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>Clean</TextBlock>
+                </TabItem.Header>
+                <StackPanel Classes="tabItemContent">
+                    <view:CleanView DataContext="{Binding CleanSettings}" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </ScrollViewer>
 
 </Window>
