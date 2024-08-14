@@ -95,11 +95,6 @@ public class CleanViewModel : ReactiveObject
     private IInputArguments FormArgumentsForClean()
     {
         string[] args = Arguments.FormCliArguments(new SettingsModel() { CoverImages = CoverImages });
-        var parser = new CliParser();
-        if (!parser.TryParseArgs(out StorageArguments arguments, args))
-        {
-            throw new Exception($"Could not parse input: [{parser.LastError.Message}]");
-        }
-        return arguments.ToCommonArguments();
+        return CliParser.ParseArgs<StorageArguments>(args).ToCommonArguments();
     }
 }

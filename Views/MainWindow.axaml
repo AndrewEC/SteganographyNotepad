@@ -21,9 +21,11 @@
                 <TabItem.Header>
                     <TextBlock>Settings</TextBlock>
                 </TabItem.Header>
-                <StackPanel Classes="tabItemContent" Spacing="10">
-                    <view:SettingsView DataContext="{Binding Settings}" />
-                    <Button Classes="loadButton" IsEnabled="{Binding IsActionEnabled}" Command="{Binding LoadTextCommand}">Load Text</Button>
+                <StackPanel Width="800">
+                    <StackPanel Classes="tabItemContent" Spacing="10">
+                        <view:SettingsView DataContext="{Binding Settings}" />
+                        <Button Classes="loadButton" IsEnabled="{Binding IsActionEnabled}" Command="{Binding LoadTextCommand}" Width="500">Load Text</Button>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
 
@@ -31,8 +33,8 @@
                 <TabItem.Header>
                     <TextBlock>Edit</TextBlock>
                 </TabItem.Header>
-                <StackPanel Classes="tabItemContent">
-                    <Button Command="{Binding SaveTextCommand}" IsEnabled="{Binding IsActionEnabled}" Classes="loadButton">Save</Button>
+                <StackPanel Width="800">
+                    <Button Command="{Binding SaveTextCommand}" IsEnabled="{Binding IsActionEnabled}" Classes="loadButton" Width="800">Save</Button>
                     <TextBox Text="{Binding TextContent}" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="{Binding IsActionEnabled}" />
                 </StackPanel>
             </TabItem>
@@ -41,8 +43,10 @@
                 <TabItem.Header>
                     <TextBlock>Clean</TextBlock>
                 </TabItem.Header>
-                <StackPanel Classes="tabItemContent">
-                    <view:CleanView DataContext="{Binding CleanSettings}" />
+                <StackPanel Width="800">
+                    <StackPanel Classes="tabItemContent">
+                        <view:CleanView DataContext="{Binding CleanSettings}" />
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

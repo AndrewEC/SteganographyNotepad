@@ -1,16 +1,13 @@
 namespace SteganographyNotepad.ViewModels;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using DynamicData;
 using ReactiveUI;
 using SteganographyNotepad.Models;
+using SteganographyNotepad.Store;
 using SteganographyNotepad.Views;
 
 /// <summary>
@@ -86,13 +83,6 @@ public class CoverImageSettingsViewModel : ReactiveObject
         }
     }
 
-    private static FilePickerFileType LosslessImagePicker() => new("Lossless Images")
-    {
-        Patterns = ["*.png", "*.webp"],
-        AppleUniformTypeIdentifiers = ["public.image"],
-        MimeTypes = ["image/*"],
-    };
-
     private static string DetermineDisplayName(string path)
     {
         if (path.Length < CharacterLimit)
@@ -104,7 +94,7 @@ public class CoverImageSettingsViewModel : ReactiveObject
 
     private async void SelectImagesClick()
     {
-        string[] files = await SelectFiles();
+        string[] files = await LosslessImagePicker.PickImages();
         if (files.Length == 0)
         {
             return;
@@ -121,25 +111,6 @@ public class CoverImageSettingsViewModel : ReactiveObject
         var nextCoverImages = selectedImages.Where(image => !existingImagePaths.Contains(image.Path)).ToList();
         nextCoverImages.AddRange(CoverImages);
         CoverImages = nextCoverImages.ToArray();
-    }
-
-    private async Task<string[]> SelectFiles()
-    {
-        Window? window = Lookup.GetMainWindow();
-        if (window == null)
-        {
-            return [];
-        }
-
-        IStorageFolder? startLocation = await window.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
-
-        IReadOnlyList<IStorageFile> files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-        {
-            AllowMultiple = true,
-            FileTypeFilter = new List<FilePickerFileType> { LosslessImagePicker() },
-            SuggestedStartLocation = startLocation,
-        });
-        return new List<IStorageFile>(files).Select(file => file.Path.AbsolutePath.ToString()).ToArray();
     }
 
     private void MoveImage(CoverImage coverImage, SwapDirection direction, Predicate<int> canMove)
