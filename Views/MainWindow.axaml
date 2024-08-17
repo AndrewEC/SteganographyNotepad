@@ -15,41 +15,47 @@
         <StyleInclude Source="/Styles/Styles.axaml" />
     </Window.Styles>
 
-    <ScrollViewer>
-        <TabControl HorizontalAlignment="Center" SelectedIndex="{Binding SelectedTabIndex}">
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock>Settings</TextBlock>
-                </TabItem.Header>
+    <TabControl HorizontalAlignment="Center" SelectedIndex="{Binding SelectedTabIndex}">
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock>Settings</TextBlock>
+            </TabItem.Header>
+            <ScrollViewer>
                 <StackPanel Width="800">
                     <StackPanel Classes="tabItemContent" Spacing="10">
                         <view:SettingsView DataContext="{Binding Settings}" />
                         <Button Classes="loadButton" IsEnabled="{Binding IsActionEnabled}" Command="{Binding LoadTextCommand}" Width="500">Load Text</Button>
                     </StackPanel>
                 </StackPanel>
-            </TabItem>
+            </ScrollViewer>
+        </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock>Edit</TextBlock>
-                </TabItem.Header>
-                <StackPanel Width="800">
-                    <Button Command="{Binding SaveTextCommand}" IsEnabled="{Binding IsActionEnabled}" Classes="loadButton" Width="800">Save</Button>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock>Edit</TextBlock>
+            </TabItem.Header>
+            <DockPanel Width="800">
+                <Button Command="{Binding SaveTextCommand}"
+                    IsEnabled="{Binding IsActionEnabled}"
+                    Classes="loadButton">Save</Button>
+                <ScrollViewer>
                     <TextBox Text="{Binding TextContent}" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="{Binding IsActionEnabled}" />
-                </StackPanel>
-            </TabItem>
+                </ScrollViewer>
+            </DockPanel>
+        </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock>Clean</TextBlock>
-                </TabItem.Header>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock>Clean</TextBlock>
+            </TabItem.Header>
+            <ScrollViewer>
                 <StackPanel Width="800">
                     <StackPanel Classes="tabItemContent">
                         <view:CleanView DataContext="{Binding CleanSettings}" />
                     </StackPanel>
                 </StackPanel>
-            </TabItem>
-        </TabControl>
-    </ScrollViewer>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
 
 </Window>
