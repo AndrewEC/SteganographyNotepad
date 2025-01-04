@@ -4,6 +4,11 @@ The Steganography Nodepad is a UI wrapper for the [SteganographyApp](https://git
 This application provides limited functionality to allow one to use the SteganographyApp to save encrypted and obfuscated text to one
 or more images.
 
+# Warning
+This repo is simply a playground to examine how Steganography can work in a limited example but it is not recommended to use this tool to obfuscate data that is important to you. Changes might be made to this repo at any time, without notice, that may make the tool incompatible with previous versions or introduce unknown bugs that may make the encoding or decoding process error prone and possibly cause a loss of data.
+
+Please view the [License.txt](./License.txt) for further details.
+
 ## Usage
 
 The application can be launched by executing the following command from the root of the project:
