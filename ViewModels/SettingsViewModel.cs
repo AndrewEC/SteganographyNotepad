@@ -96,7 +96,7 @@ public class SettingsViewModel(CoverImageSettingsViewModel coverImageSettings) :
     /// Gets the settings model to configure the encoding or decoding process.
     /// </summary>
     /// <returns>The settings used to configure the encoding or decoding process.</returns>
-    public SettingsModel GetLoadSettings() => new()
+    public SettingsModel AsModel() => new()
     {
         Password = Password,
         RandomSeed = RandomSeed,

@@ -26,24 +26,21 @@ internal static class Decoder
     private static string DecodeData(IInputArguments arguments)
     {
         var store = new ImageStore(arguments);
-        using (var chunkTableReader = new ChunkTableReader(store, arguments))
+        using (var storeStream = store.OpenStream())
         {
-            using (var wrapper = store.CreateIOWrapper())
-            {
-                var contentChunkTable = chunkTableReader.ReadContentChunkTable();
+            var contentChunkTable = new ChunkTableReader(storeStream, arguments).ReadContentChunkTable();
 
-                using (var stream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
+            {
+                foreach (int chunkLength in contentChunkTable)
                 {
-                    foreach (int chunkLength in contentChunkTable)
-                    {
-                        string binary = wrapper.ReadContentChunkFromImage(chunkLength);
-                        byte[] decoded = Injector.Provide<IDataEncoderUtil>()
-                            .Decode(binary, arguments.Password, arguments.UseCompression, arguments.DummyCount, arguments.RandomSeed, arguments.AdditionalPasswordHashIterations);
-                        stream.Write(decoded);
-                    }
-                    stream.Position = 0;
-                    return Encoding.UTF8.GetString(stream.ToArray());
+                    string binary = storeStream.ReadContentChunkFromImage(chunkLength);
+                    byte[] decoded = Injector.Provide<IDataEncoderUtil>()
+                        .Decode(binary, arguments.Password, arguments.UseCompression, arguments.DummyCount, arguments.RandomSeed, arguments.AdditionalPasswordHashIterations);
+                    memoryStream.Write(decoded);
                 }
+                memoryStream.Position = 0;
+                return Encoding.UTF8.GetString(memoryStream.ToArray());
             }
         }
     }

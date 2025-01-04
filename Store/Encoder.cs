@@ -33,17 +33,18 @@ internal static class Encoder
 
         int written = -1;
         var store = new ImageStore(arguments);
-        using (var wrapper = store.CreateIOWrapper())
+        using (var stream = store.OpenStream())
         {
-            wrapper.SeekToPixel(startingPixel);
-            written = wrapper.WriteContentChunkToImage(binaryData);
-            wrapper.EncodeComplete();
+            stream.SeekToPixel(startingPixel);
+            written = stream.WriteContentChunkToImage(binaryData);
+            stream.EncodeComplete();
         }
 
         if (written == -1)
         {
             return;
         }
+
         using (var writer = new ChunkTableWriter(store, arguments))
         {
             writer.WriteContentChunkTable(ImmutableArray.Create(written));

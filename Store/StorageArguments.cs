@@ -1,5 +1,7 @@
 namespace SteganographyNotepad.Store;
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -16,6 +18,15 @@ using SteganographyNotepad.Models;
 /// </summary>
 public static class Arguments
 {
+    private static readonly ImmutableDictionary<Func<SettingsModel, string?>, string> Builders = new Dictionary<Func<SettingsModel, string?>, string>()
+    {
+        { model => string.Join(",", (model.CoverImages ?? []).Select(image => image.Path)), "-c " },
+        { model => model.Password, " -p " },
+        { model => model.RandomSeed, " -r " },
+        { model => model.AdditionalHashes, " -a " },
+        { model => model.DummyCount, " -d " },
+    }.ToImmutableDictionary();
+
     /// <summary>
     /// Transforms the settings into a string array that replicates how the CLI
     /// arguments would look if the SteganographyApp would be run from the command line.
@@ -24,25 +35,18 @@ public static class Arguments
     /// <returns>The CLI arguments in the form of a string array.</returns>
     public static string[] FormCliArguments(SettingsModel settings)
     {
-        string imagePaths = string.Join(',', settings.CoverImages.Select(image => image.Path));
-        var builder = new StringBuilder($"-c {imagePaths}");
+        var builder = new StringBuilder();
 
-        if (!string.IsNullOrEmpty(settings.Password))
+        foreach (var entry in Builders)
         {
-            builder.Append($" -p {settings.Password}");
+            string? value = entry.Key.Invoke(settings);
+            if (string.IsNullOrEmpty(value))
+            {
+                continue;
+            }
+            builder.Append(entry.Value).Append(value);
         }
-        if (!string.IsNullOrEmpty(settings.RandomSeed))
-        {
-            builder.Append($" -r {settings.RandomSeed}");
-        }
-        if (!string.IsNullOrEmpty(settings.AdditionalHashes))
-        {
-            builder.Append($" -a {settings.AdditionalHashes}");
-        }
-        if (!string.IsNullOrEmpty(settings.DummyCount))
-        {
-            builder.Append($" -d {settings.DummyCount}");
-        }
+
         if (!string.IsNullOrEmpty(settings.IsCompressionEnabled))
         {
             builder.Append($" -co");

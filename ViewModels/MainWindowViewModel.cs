@@ -105,7 +105,7 @@ public class MainWindowViewModel : ViewModelBase
         IsActionEnabled = false;
         try
         {
-            IInputArguments arguments = FormDecodeArguments();
+            IInputArguments arguments = FormEncodeOrDecodeArguments();
             await Encoder.EncodeDataToImagesAsync(TextContent, arguments);
         }
         catch (Exception e)
@@ -123,7 +123,7 @@ public class MainWindowViewModel : ViewModelBase
         IsActionEnabled = false;
         try
         {
-            IInputArguments arguments = FormDecodeArguments();
+            IInputArguments arguments = FormEncodeOrDecodeArguments();
             TextContent = await Decoder.DecodeTextFromImagesAsync(arguments);
             SelectedTabIndex = 1;
         }
@@ -137,9 +137,9 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private IInputArguments FormDecodeArguments()
+    private IInputArguments FormEncodeOrDecodeArguments()
     {
-        SettingsModel settingsConfig = Settings.GetLoadSettings();
+        SettingsModel settingsConfig = Settings.AsModel();
         string[] cliArguments = Arguments.FormCliArguments(settingsConfig);
         var parser = new CliParser();
         if (!parser.TryParseArgs(out StorageArguments arguments, cliArguments))

@@ -16,7 +16,7 @@ internal static class LosslessImagePicker
 {
     /// <summary>
     /// Presents a dialog by which a user can pick a series of lossless images on disk
-    /// and returns the paths to the files selected.
+    /// and returns the paths to the files selected or an empty array if the user cancelled the dialog.
     /// This will only ensure that the extension of the file matches a compatible image format
     /// but will not actually check that the file selected is actually a supported image.
     /// </summary>
