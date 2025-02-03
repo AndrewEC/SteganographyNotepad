@@ -35,7 +35,7 @@ internal static class LosslessImagePicker
         IReadOnlyList<IStorageFile> files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             AllowMultiple = true,
-            FileTypeFilter = new List<FilePickerFileType> { LosslessFilePickerTypes() },
+            FileTypeFilter = [LosslessFilePickerTypes()],
             SuggestedStartLocation = startLocation,
         });
         return new List<IStorageFile>(files).Select(file => file.Path.AbsolutePath.ToString()).ToArray();

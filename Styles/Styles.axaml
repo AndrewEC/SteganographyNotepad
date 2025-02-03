@@ -1,41 +1,46 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style Selector="StackPanel.tabItemContent">
+    <Style Selector="StackPanel.TabItemContent">
         <Setter Property="Width" Value="500"/>
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
     
-    <Style Selector="TextBlock.settingsLabel">
+    <Style Selector="TextBlock.SettingsLabel">
         <Setter Property="Width" Value="130"/>
         <Setter Property="Margin" Value="0 5" />
     </Style>
 
-    <Style Selector="TextBox.settingsInput">
+    <Style Selector="TextBox.SettingsInput">
         <Setter Property="Width" Value="370" />
     </Style>
 
-    <Style Selector="Button.selectImages">
+    <Style Selector="Button.SelectImages">
         <Setter Property="Width" Value="490" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 
-    <Style Selector="TextBlock.imageDisplayName">
+    <Style Selector="TextBlock.ImageDisplayName">
         <Setter Property="Width" Value="263" />
         <Setter Property="Margin" Value="0 5" />
     </Style>
 
-    <Style Selector="Button.manageCoverImages">
+    <Style Selector="Button.ManageCoverImages">
         <Setter Property="Width" Value="75" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 
-    <Style Selector="Button.loadButton">
+    <Style Selector="Button.LoadButton">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="0 5" />
     </Style>
 
-    <Style Selector="Button.cleanButton">
+    <Style Selector="Button.SaveButton">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="5 5" />
+    </Style>
+
+    <Style Selector="Button.CleanButton">
         <Setter Property="Width" Value="500" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="0 5" />

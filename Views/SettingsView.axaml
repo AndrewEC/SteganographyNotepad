@@ -12,20 +12,20 @@
 
   <StackPanel Spacing="10" HorizontalAlignment="Center">
     <StackPanel Orientation="Horizontal">
-      <TextBlock Classes="settingsLabel" Text="Password: " />
-      <TextBox Classes="settingsInput" PasswordChar="*" Text="{Binding Password}" />
+      <TextBlock Classes="SettingsLabel" Text="Password: " />
+      <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding Password}" />
     </StackPanel>
     <StackPanel Orientation="Horizontal">
-      <TextBlock Classes="settingsLabel" Text="Random Seed: " />
-      <TextBox Classes="settingsInput" PasswordChar="*" Text="{Binding RandomSeed}" />
+      <TextBlock Classes="SettingsLabel" Text="Random Seed: " />
+      <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding RandomSeed}" />
     </StackPanel>
     <StackPanel Orientation="Horizontal">
-      <TextBlock Classes="settingsLabel" Text="Dummy Count: " />
-      <TextBox Classes="settingsInput" PasswordChar="*" Text="{Binding DummyCount}" />
+      <TextBlock Classes="SettingsLabel" Text="Dummy Count: " />
+      <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding DummyCount}" />
     </StackPanel>
     <StackPanel Orientation="Horizontal">
-      <TextBlock Classes="settingsLabel" Text="Additional Hashes: " />
-      <TextBox Classes="settingsInput" PasswordChar="*" Text="{Binding AdditionalHashes}" />
+      <TextBlock Classes="SettingsLabel" Text="Additional Hashes: " />
+      <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding AdditionalHashes}" />
     </StackPanel>
 
     <CheckBox IsChecked="{Binding IsCompressionEnabled}" Classes="inputRow">Enable Compression</CheckBox>

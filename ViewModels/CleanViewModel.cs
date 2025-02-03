@@ -62,9 +62,11 @@ public class CleanViewModel : ReactiveObject
         }
     }
 
-    private static Task CleanImagesAsync(IInputArguments arguments) => Task.Run(() => CleanImages(arguments));
+    private static Task CleanImagesAsync(IInputArguments arguments)
+        => Task.Run(() => CleanImages(arguments));
 
-    private static void CleanImages(IInputArguments arguments) => new ImageCleaner(arguments, new ImageStore(arguments)).CleanImages();
+    private static void CleanImages(IInputArguments arguments)
+        => new ImageCleaner(arguments, new ImageStore(arguments)).CleanImages();
 
     private async void CleanImages()
     {

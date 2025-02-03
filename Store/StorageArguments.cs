@@ -20,7 +20,7 @@ public static class Arguments
 {
     private static readonly ImmutableDictionary<Func<SettingsModel, string?>, string> Builders = new Dictionary<Func<SettingsModel, string?>, string>()
     {
-        { model => string.Join(",", (model.CoverImages ?? []).Select(image => image.Path)), "-c " },
+        { model => string.Join(",", model.CoverImages.Select(image => image.Path)), "-c " },
         { model => model.Password, " -p " },
         { model => model.RandomSeed, " -r " },
         { model => model.AdditionalHashes, " -a " },

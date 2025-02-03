@@ -22,9 +22,12 @@
             </TabItem.Header>
             <ScrollViewer>
                 <StackPanel Width="800">
-                    <StackPanel Classes="tabItemContent" Spacing="10">
+                    <StackPanel Classes="TabItemContent" Spacing="10">
                         <view:SettingsView DataContext="{Binding Settings}" />
-                        <Button Classes="loadButton" IsEnabled="{Binding IsActionEnabled}" Command="{Binding LoadTextCommand}" Width="500">Load Text</Button>
+                        <Button Classes="LoadButton"
+                            IsEnabled="{Binding IsActionEnabled}"
+                            Command="{Binding LoadTextCommand}"
+                            Width="500">Load Text</Button>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
@@ -37,9 +40,12 @@
             <DockPanel Width="800">
                 <Button Command="{Binding SaveTextCommand}"
                     IsEnabled="{Binding IsActionEnabled}"
-                    Classes="loadButton">Save</Button>
+                    Classes="SaveButton">Save</Button>
                 <ScrollViewer>
-                    <TextBox Text="{Binding TextContent}" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="{Binding IsActionEnabled}" />
+                    <TextBox Text="{Binding TextContent}"
+                        AcceptsReturn="True"
+                        TextWrapping="Wrap"
+                        IsEnabled="{Binding IsActionEnabled}" />
                 </ScrollViewer>
             </DockPanel>
         </TabItem>
@@ -50,7 +56,7 @@
             </TabItem.Header>
             <ScrollViewer>
                 <StackPanel Width="800">
-                    <StackPanel Classes="tabItemContent">
+                    <StackPanel Classes="TabItemContent">
                         <view:CleanView DataContext="{Binding CleanSettings}" />
                     </StackPanel>
                 </StackPanel>

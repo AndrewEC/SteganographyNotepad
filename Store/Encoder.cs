@@ -1,6 +1,5 @@
 namespace SteganographyNotepad.Store;
 
-using System.Collections.Immutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +7,7 @@ using SteganographyApp.Common;
 using SteganographyApp.Common.Data;
 using SteganographyApp.Common.Injection;
 using SteganographyApp.Common.IO;
+using SteganographyApp.Common.IO.Content;
 
 /// <summary>
 /// Utility class to asynchronously encode the text content to the cover images.
@@ -33,11 +33,10 @@ internal static class Encoder
 
         int written = -1;
         var store = new ImageStore(arguments);
-        using (var stream = store.OpenStream())
+        using (var stream = store.OpenStream(StreamMode.Write))
         {
             stream.SeekToPixel(startingPixel);
             written = stream.WriteContentChunkToImage(binaryData);
-            stream.EncodeComplete();
         }
 
         if (written == -1)
@@ -45,9 +44,9 @@ internal static class Encoder
             return;
         }
 
-        using (var writer = new ChunkTableWriter(store, arguments))
+        using (var writer = new ChunkTableWriter(store))
         {
-            writer.WriteContentChunkTable(ImmutableArray.Create(written));
+            writer.WriteContentChunkTable([written]);
         }
     }
 }

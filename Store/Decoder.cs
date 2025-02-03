@@ -8,6 +8,7 @@ using SteganographyApp.Common;
 using SteganographyApp.Common.Data;
 using SteganographyApp.Common.Injection;
 using SteganographyApp.Common.IO;
+using SteganographyApp.Common.IO.Content;
 
 /// <summary>
 /// Utility class to asynchronously decode text content from the cover images.
@@ -21,14 +22,15 @@ internal static class Decoder
     /// <param name="arguments">The arguments used by the <see cref="ImageStore"/> to decode data from the
     /// cover images.</param>
     /// <returns>A UTF-8 encoded string read from the cover images.</returns>
-    public static Task<string> DecodeTextFromImagesAsync(IInputArguments arguments) => Task.Run(() => DecodeData(arguments));
+    public static Task<string> DecodeTextFromImagesAsync(IInputArguments arguments)
+        => Task.Run(() => DecodeData(arguments));
 
     private static string DecodeData(IInputArguments arguments)
     {
         var store = new ImageStore(arguments);
-        using (var storeStream = store.OpenStream())
+        using (var storeStream = store.OpenStream(StreamMode.Read))
         {
-            var contentChunkTable = new ChunkTableReader(storeStream, arguments).ReadContentChunkTable();
+            var contentChunkTable = new ChunkTableReader(storeStream).ReadContentChunkTable();
 
             using (var memoryStream = new MemoryStream())
             {

@@ -144,7 +144,7 @@ public class MainWindowViewModel : ViewModelBase
         var parser = new CliParser();
         if (!parser.TryParseArgs(out StorageArguments arguments, cliArguments))
         {
-            throw new Exception($"Could not parse settings. Cause: [{parser.LastError.Message}]");
+            throw new Exception($"Could not parse settings. Cause: [{parser.LastError?.Message ?? "unknown"}]");
         }
         return arguments.ToCommonArguments();
     }
