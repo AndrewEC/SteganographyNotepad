@@ -89,6 +89,7 @@ public class CoverImageSettingsViewModel : ReactiveObject
         {
             return path;
         }
+
         return string.Concat("...", path.AsSpan(path.Length - CharacterLimit));
     }
 
@@ -116,14 +117,14 @@ public class CoverImageSettingsViewModel : ReactiveObject
     private void MoveImage(CoverImage coverImage, SwapDirection direction, Predicate<int> canMove)
     {
         int position = CoverImages.IndexOf(coverImage);
-        if (!canMove(position))
+        if (position == -1 || !canMove(position))
         {
             return;
         }
+
+        int targetPosition = position + (1 * (int)direction);
         var toUpdate = (CoverImage[])CoverImages.Clone();
-        var temp = toUpdate[position];
-        toUpdate[position] = toUpdate[position + (1 * (int)direction)];
-        toUpdate[position + (1 * (int)direction)] = temp;
+        (toUpdate[targetPosition], toUpdate[position]) = (toUpdate[position], toUpdate[targetPosition]);
         CoverImages = toUpdate;
     }
 
@@ -136,13 +137,13 @@ public class CoverImageSettingsViewModel : ReactiveObject
     private void MoveImageUp(string path)
     {
         var imageToMove = FindImageWithPath(path);
-        MoveImage(imageToMove, SwapDirection.Up, position => position != -1 && position > 0);
+        MoveImage(imageToMove, SwapDirection.Up, position => position > 0);
     }
 
     private void MoveImageDown(string path)
     {
         var imageToMove = FindImageWithPath(path);
-        MoveImage(imageToMove, SwapDirection.Down, position => position != -1 && position < CoverImages.Length - 1);
+        MoveImage(imageToMove, SwapDirection.Down, position => position < CoverImages.Length - 1);
     }
 
     private CoverImage FindImageWithPath(string path) => CoverImages.Where(image => image.Path == path).FirstOrDefault()

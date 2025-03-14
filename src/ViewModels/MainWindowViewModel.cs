@@ -96,6 +96,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             return;
         }
+
         IsActionEnabled = CoverImageSettings.CoverImages.Length > 0;
         CleanSettings.CoverImages = CoverImageSettings.CoverImages;
     }
@@ -146,6 +147,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             throw new Exception($"Could not parse settings. Cause: [{parser.LastError?.Message ?? "unknown"}]");
         }
+
         return arguments.ToCommonArguments();
     }
 }

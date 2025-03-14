@@ -1,5 +1,5 @@
 # Updating Local Packages
-1. From the `SteganographyApp` folder, not the `SteganographyNotepad` folder, run the script `./run_package.ps1`
+1. From the `SteganographyApp` folder, not the `SteganographyNotepad` folder, run the script `./RunPackage.ps1`
 2. Delete the .nupkg files that exist in the `SteganographyNotepad/local-packages` folder.
 3. Copy the following files into the `SteganographyNotepad/local-packages` folder:
     * `SteganographyApp\SteganographyApp.Common\bin\Release\SteganographyApp.Common.<version>.nupkg`

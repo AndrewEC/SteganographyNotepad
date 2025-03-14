@@ -57,6 +57,7 @@ internal static class LosslessImagePicker
                 return window;
             }
         }
+
         return null;
     }
 }

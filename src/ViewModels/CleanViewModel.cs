@@ -17,7 +17,7 @@ using SteganographyNotepad.Views;
 /// <summary>
 /// The view model for <see cref="CleanView"/>.
 /// </summary>
-[SuppressMessage("Ordering Rules", "SA1201", Justification = "Useless Rule")]
+[SuppressMessage("Ordering Rules", "SA1201", Justification = "Unecessary Rule")]
 public class CleanViewModel : ReactiveObject
 {
     /// <summary>

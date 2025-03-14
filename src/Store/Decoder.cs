@@ -41,6 +41,7 @@ internal static class Decoder
                         .Decode(binary, arguments.Password, arguments.UseCompression, arguments.DummyCount, arguments.RandomSeed, arguments.AdditionalPasswordHashIterations);
                     memoryStream.Write(decoded);
                 }
+
                 memoryStream.Position = 0;
                 return Encoding.UTF8.GetString(memoryStream.ToArray());
             }

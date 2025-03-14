@@ -21,7 +21,8 @@ internal static class Encoder
     /// <param name="data">The data to be encoded and written to the cover images.</param>
     /// <param name="arguments">The arguments to customize the behaviour or the encoder.</param>
     /// <returns>The void task to execute the encoding/writing process.</returns>
-    public static Task EncodeDataToImagesAsync(string data, IInputArguments arguments) => Task.Run(() => EncodeData(data, arguments));
+    public static Task EncodeDataToImagesAsync(string data, IInputArguments arguments)
+        => Task.Run(() => EncodeData(data, arguments));
 
     private static void EncodeData(string data, IInputArguments arguments)
     {

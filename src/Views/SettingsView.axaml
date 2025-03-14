@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+
+             xmlns:view="using:SteganographyNotepad.Views"
+             xmlns:viewmodel="using:SteganographyNotepad.ViewModels"
+             xmlns:model="using:SteganographyNotepad.Models"
+             x:Class="SteganographyNotepad.Views.SettingsView"
+             x:DataType="viewmodel:SettingsViewModel">
+
+    <StackPanel Spacing="10" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Classes="SettingsLabel" Text="Password: " />
+            <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding Password}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Classes="SettingsLabel" Text="Random Seed: " />
+            <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding RandomSeed}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Classes="SettingsLabel" Text="Dummy Count: " />
+            <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding DummyCount}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Classes="SettingsLabel" Text="Additional Hashes: " />
+            <TextBox Classes="SettingsInput" PasswordChar="*" Text="{Binding AdditionalHashes}" />
+        </StackPanel>
+
+        <CheckBox IsChecked="{Binding IsCompressionEnabled}" Classes="inputRow">Enable Compression</CheckBox>
+
+        <view:CoverImageSettingsView DataContext="{Binding CoverImageSettings}" />
+
+    </StackPanel>
+
+</UserControl>

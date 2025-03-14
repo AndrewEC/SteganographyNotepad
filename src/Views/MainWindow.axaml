@@ -12,7 +12,7 @@
         x:DataType="viewmodel:MainWindowViewModel">
     
     <Window.Styles>
-        <StyleInclude Source="/Styles/Styles.axaml" />
+        <StyleInclude Source="/src/Styles/Styles.axaml" />
     </Window.Styles>
 
     <TabControl HorizontalAlignment="Center" SelectedIndex="{Binding SelectedTabIndex}">
@@ -40,12 +40,15 @@
             <DockPanel Width="800">
                 <Button Command="{Binding SaveTextCommand}"
                     IsEnabled="{Binding IsActionEnabled}"
-                    Classes="SaveButton">Save</Button>
+                    Classes="SaveButton"
+                    DockPanel.Dock="Top">Save</Button>
                 <ScrollViewer>
                     <TextBox Text="{Binding TextContent}"
                         AcceptsReturn="True"
                         TextWrapping="Wrap"
-                        IsEnabled="{Binding IsActionEnabled}" />
+                        IsEnabled="{Binding IsActionEnabled}"
+                        DockPanel.Dock="Bottom"
+                        Classes="MainInput" />
                 </ScrollViewer>
             </DockPanel>
         </TabItem>
