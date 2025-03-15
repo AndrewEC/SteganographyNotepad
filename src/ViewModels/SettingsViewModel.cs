@@ -1,38 +1,71 @@
 namespace SteganographyNotepad.ViewModels;
 
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reactive;
 using ReactiveUI;
 using SteganographyNotepad.Models;
 using SteganographyNotepad.Views;
 
 /// <summary>
-/// Indicates the direction a given cover image should be moved
-/// within the context of the current cover images array.
-/// </summary>
-internal enum SwapDirection
-{
-    /// <summary>
-    /// Move the image up to the beginning of the cover images array.
-    /// </summary>
-    Up = -1,
-
-    /// <summary>
-    /// Move the image down to the end of the cover images array.
-    /// </summary>
-    Down = 1,
-}
-
-/// <summary>
 /// The view model for <see cref="SettingsView"/>.
 /// </summary>
-/// <param name="coverImageSettings">The data context of the cover images settings panel.</param>
-[SuppressMessage("Ordering Rules", "SA1201", Justification = "Useless Rule")]
-public class SettingsViewModel(CoverImageSettingsViewModel coverImageSettings) : ViewModelBase
+[SuppressMessage("Ordering Rules", "SA1201", Justification = "Reviewed")]
+public class SettingsViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Initializes the settings view model.
+    /// </summary>
+    /// <param name="appState">The root application state. This view model will listen
+    /// for changes on the <see cref="AppStateProperties.IsActionEnabled"/> property.</param>
+    /// <param name="loadTextCallback">The callback to be invoked when the load button
+    /// has been clicked so text can be loaded from the selected cover images.</param>
+    public SettingsViewModel(AppStateProperties appState, ReactiveCommand<Unit, Unit> loadTextCallback)
+    {
+        this.appState = appState;
+        appState.PropertyChanged += OnAppStateChanged;
+        CoverImageSettingsViewDataContext = new(appState);
+        LoadTextCommand = loadTextCallback;
+    }
+
+    private readonly AppStateProperties appState;
+
+    private void OnAppStateChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (sender != appState)
+        {
+            return;
+        }
+
+        if (e.PropertyName == nameof(appState.IsActionEnabled))
+        {
+            IsActionEnabled = appState.IsActionEnabled;
+        }
+    }
+
     /// <summary>
     /// Gets the data context for the cover image settings panel.
     /// </summary>
-    public CoverImageSettingsViewModel CoverImageSettings { get; } = coverImageSettings;
+    public CoverImageSettingsViewModel CoverImageSettingsViewDataContext { get; }
+
+    /// <summary>
+    /// Gets the command to be invoked when the "Load" button has been clicked.
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> LoadTextCommand { get; }
+
+    private bool isActionEnabled = false;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the "Load" button should be enabled.
+    /// </summary>
+    public bool IsActionEnabled
+    {
+        get => isActionEnabled;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref isActionEnabled, value);
+        }
+    }
 
     private string password = string.Empty;
 
@@ -102,7 +135,7 @@ public class SettingsViewModel(CoverImageSettingsViewModel coverImageSettings) :
         RandomSeed = RandomSeed,
         DummyCount = DummyCount,
         AdditionalHashes = AdditionalHashes,
-        CoverImages = CoverImageSettings.CoverImages,
+        CoverImages = CoverImageSettingsViewDataContext.CoverImages,
         IsCompressionEnabled = IsCompressionEnabled.ToString(),
     };
 }

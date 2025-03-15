@@ -9,6 +9,7 @@ using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using SteganographyApp.Common;
 using SteganographyApp.Common.Arguments;
+using SteganographyNotepad.Log;
 using SteganographyNotepad.Models;
 using SteganographyNotepad.Store;
 using SteganographyNotepad.Views;
@@ -16,7 +17,7 @@ using SteganographyNotepad.Views;
 /// <summary>
 /// The view model for <see cref="MainWindow"/>.
 /// </summary>
-[SuppressMessage("Ordering Rules", "SA1201", Justification = "Useless Rule")]
+[SuppressMessage("Ordering Rules", "SA1201", Justification = "Reviewed")]
 public class MainWindowViewModel : ViewModelBase
 {
     /// <summary>
@@ -26,24 +27,33 @@ public class MainWindowViewModel : ViewModelBase
     {
         LoadTextCommand = ReactiveCommand.Create(LoadText);
         SaveTextCommand = ReactiveCommand.Create(SaveText);
-        Settings = new(CoverImageSettings);
-        CoverImageSettings.PropertyChanged += OnPropertyChanged;
+
+        appState = new();
+        appState.PropertyChanged += OnAppStateChanged;
+
+        SettingsViewDataContext = new(appState, LoadTextCommand);
+        EditViewDataContext = new(appState, SaveTextCommand);
+        CleanViewDataContext = new(appState);
     }
 
-    /// <summary>
-    /// Gets the view model for the cover image settings.
-    /// </summary>
-    public CoverImageSettingsViewModel CoverImageSettings { get; } = new();
+    private readonly ConsoleLogger<MainWindowViewModel> logger = new();
+
+    private readonly AppStateProperties appState;
 
     /// <summary>
-    /// Gets the view model for the main settings panel.
+    /// Gets the data context for the EditView.
     /// </summary>
-    public SettingsViewModel Settings { get; }
+    public EditViewModel EditViewDataContext { get; }
 
     /// <summary>
-    /// Gets the settings of the clean images panel.
+    /// Gets the data context for the SettingsView.
     /// </summary>
-    public CleanViewModel CleanSettings { get; } = new();
+    public SettingsViewModel SettingsViewDataContext { get; }
+
+    /// <summary>
+    /// Gets the data contet for the CleanView.
+    /// </summary>
+    public CleanViewModel CleanViewDataContext { get; }
 
     /// <summary>
     /// Gets the command triggered by the click of the load button to initiate the
@@ -65,7 +75,11 @@ public class MainWindowViewModel : ViewModelBase
     public int SelectedTabIndex
     {
         get => selectedTabIndex;
-        set => this.RaiseAndSetIfChanged(ref selectedTabIndex, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref selectedTabIndex, value);
+            appState.SelectedTabIndex = value;
+        }
     }
 
     private bool isActionEnabled = false;
@@ -79,72 +93,77 @@ public class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref isActionEnabled, value);
     }
 
-    private string textContent = string.Empty;
-
-    /// <summary>
-    /// Gets or sets the user's custom text.
-    /// </summary>
-    public string TextContent
+    private void OnAppStateChanged(object? sender, PropertyChangedEventArgs e)
     {
-        get => textContent;
-        set => this.RaiseAndSetIfChanged(ref textContent, value);
-    }
-
-    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(CoverImageSettings.CoverImages))
+        if (sender != appState)
         {
             return;
         }
 
-        IsActionEnabled = CoverImageSettings.CoverImages.Length > 0;
-        CleanSettings.CoverImages = CoverImageSettings.CoverImages;
+        switch (e.PropertyName)
+        {
+            case nameof(appState.IsActionEnabled):
+                IsActionEnabled = appState.IsActionEnabled;
+                break;
+            case nameof(appState.SelectedTabIndex):
+                SelectedTabIndex = appState.SelectedTabIndex;
+                break;
+            case nameof(appState.CoverImages):
+                appState.IsActionEnabled = appState.CoverImages.Length > 0;
+                break;
+        }
     }
 
     private async void SaveText()
     {
-        IsActionEnabled = false;
+        logger.Log("Saving text to images.");
+        appState.IsActionEnabled = false;
         try
         {
             IInputArguments arguments = FormEncodeOrDecodeArguments();
-            await Encoder.EncodeDataToImagesAsync(TextContent, arguments);
+            await Encoder.EncodeDataToImagesAsync(appState.TextContent, arguments);
         }
         catch (Exception e)
         {
+            logger.Error("Could not save text to images.", e);
             await MessageBoxManager.GetMessageBoxStandard("Save Error", e.Message, ButtonEnum.Ok).ShowAsync();
         }
         finally
         {
-            IsActionEnabled = true;
+            appState.IsActionEnabled = true;
         }
     }
 
     private async void LoadText()
     {
-        IsActionEnabled = false;
+        logger.Log("Loading text from images.");
+        appState.IsActionEnabled = false;
         try
         {
             IInputArguments arguments = FormEncodeOrDecodeArguments();
-            TextContent = await Decoder.DecodeTextFromImagesAsync(arguments);
-            SelectedTabIndex = 1;
+            appState.TextContent = await Decoder.DecodeTextFromImagesAsync(arguments);
+            appState.SelectedTabIndex = 1;
         }
         catch (Exception e)
         {
+            logger.Error("Could not load text from images.", e);
             await MessageBoxManager.GetMessageBoxStandard("Load Error", e.Message, ButtonEnum.Ok).ShowAsync();
         }
         finally
         {
-            IsActionEnabled = true;
+            appState.IsActionEnabled = true;
         }
     }
 
     private IInputArguments FormEncodeOrDecodeArguments()
     {
-        SettingsModel settingsConfig = Settings.AsModel();
+        SettingsModel settingsConfig = SettingsViewDataContext.AsModel();
         string[] cliArguments = Arguments.FormCliArguments(settingsConfig);
+        logger.Log($"Forming CLI arguments: [{string.Join(", ", cliArguments)}]");
         var parser = new CliParser();
         if (!parser.TryParseArgs(out StorageArguments arguments, cliArguments))
         {
+            logger.Error("Could not parse CLI arguments.", parser.LastError);
             throw new Exception($"Could not parse settings. Cause: [{parser.LastError?.Message ?? "unknown"}]");
         }
 

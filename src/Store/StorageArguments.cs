@@ -9,7 +9,7 @@ using SteganographyApp.Common.Parsers;
 /// <summary>
 /// The CLI parseable argument model.
 /// </summary>
-[SuppressMessage("Maintainability Rules", "SA1401", Justification = "Useless Rule")]
+[SuppressMessage("Maintainability Rules", "SA1401", Justification = "Reviewed")]
 public sealed class StorageArguments : IArgumentConverter
 {
     /// <summary>

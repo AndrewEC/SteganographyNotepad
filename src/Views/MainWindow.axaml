@@ -20,50 +20,21 @@
             <TabItem.Header>
                 <TextBlock>Settings</TextBlock>
             </TabItem.Header>
-            <ScrollViewer>
-                <StackPanel Width="800">
-                    <StackPanel Classes="TabItemContent" Spacing="10">
-                        <view:SettingsView DataContext="{Binding Settings}" />
-                        <Button Classes="LoadButton"
-                            IsEnabled="{Binding IsActionEnabled}"
-                            Command="{Binding LoadTextCommand}"
-                            Width="500">Load Text</Button>
-                    </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
+            <view:SettingsView DataContext="{Binding SettingsViewDataContext}"/>
         </TabItem>
 
         <TabItem>
             <TabItem.Header>
                 <TextBlock>Edit</TextBlock>
             </TabItem.Header>
-            <DockPanel Width="800">
-                <Button Command="{Binding SaveTextCommand}"
-                    IsEnabled="{Binding IsActionEnabled}"
-                    Classes="SaveButton"
-                    DockPanel.Dock="Top">Save</Button>
-                <ScrollViewer>
-                    <TextBox Text="{Binding TextContent}"
-                        AcceptsReturn="True"
-                        TextWrapping="Wrap"
-                        IsEnabled="{Binding IsActionEnabled}"
-                        DockPanel.Dock="Bottom"
-                        Classes="MainInput" />
-                </ScrollViewer>
-            </DockPanel>
+            <view:EditView DataContext="{Binding EditViewDataContext}"/>
         </TabItem>
 
         <TabItem>
             <TabItem.Header>
                 <TextBlock>Clean</TextBlock>
             </TabItem.Header>
-            <ScrollViewer>
-                <StackPanel Width="800">
-                    <StackPanel Classes="TabItemContent">
-                        <view:CleanView DataContext="{Binding CleanSettings}" />
-                    </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
+            <view:CleanView DataContext="{Binding CleanViewDataContext}" />
         </TabItem>
     </TabControl>
 

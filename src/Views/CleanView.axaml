@@ -9,21 +9,31 @@
              x:Class="SteganographyNotepad.Views.CleanView"
              x:DataType="viewmodel:CleanViewModel">
 
-    <StackPanel>
-        <TextBlock Text="Clean data from the images selected in your settings." />
-        <Button Classes="CleanButton" IsEnabled="{Binding CleanEnabled}" Command="{Binding CleanImagesCommand}">Clean Images</Button>
+    <ScrollViewer>
+        <StackPanel Width="800">
+            <StackPanel Classes="TabItemContent">
+                <StackPanel>
 
-        <StackPanel Orientation="Vertical" Spacing="5">
-            <ItemsControl ItemsSource="{Binding CoverImages}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="model:CoverImage">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding DisplayName}" Classes="ImageDisplayName" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    <TextBlock Text="Clean data from the images selected in your settings." />
+                    <Button Classes="CleanButton"
+                        IsEnabled="{Binding IsActionEnabled}"
+                        Command="{Binding CleanImagesCommand}">Clean Images</Button>
+
+                    <StackPanel Orientation="Vertical" Spacing="5">
+                        <ItemsControl ItemsSource="{Binding CoverImages}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="model:CoverImage">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DisplayName}" Classes="ImageDisplayName" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
-  </StackPanel>
+    </ScrollViewer>
 
 </UserControl>
