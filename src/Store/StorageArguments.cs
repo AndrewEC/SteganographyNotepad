@@ -15,7 +15,8 @@ public sealed class StorageArguments : IArgumentConverter
     /// <summary>
     /// The set of cover images the data will be read from or written to.
     /// </summary>
-    [Argument("--coverImages", "-c", true, parser: nameof(ParseImages))]
+    [Argument("--coverImages", "-c", parser: nameof(ParseImages))]
+    [Required]
     public ImmutableArray<string> CoverImages = [];
 
     /// <summary>

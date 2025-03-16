@@ -10,7 +10,7 @@ using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using SteganographyApp.Common;
 using SteganographyApp.Common.Arguments;
-using SteganographyApp.Common.IO;
+using SteganographyApp.Common.Injection;
 using SteganographyNotepad.Log;
 using SteganographyNotepad.Models;
 using SteganographyNotepad.Store;
@@ -77,7 +77,7 @@ public class CleanViewModel : ReactiveObject
         => Task.Run(() => CleanImages(arguments));
 
     private static void CleanImages(IInputArguments arguments)
-        => new ImageCleaner(arguments, new ImageStore(arguments)).CleanImages();
+        => new ImageCleaner(arguments, ServiceContainer.CreateImageStore(arguments)).CleanImages();
 
     private void OnAppStateChanged(object? sender, PropertyChangedEventArgs e)
     {

@@ -27,13 +27,14 @@ internal static class Encoder
     private static void EncodeData(string data, IInputArguments arguments)
     {
         byte[] dataBytes = Encoding.UTF8.GetBytes(data);
-        string binaryData = Injector.Provide<IDataEncoderUtil>()
+        string binaryData = ServiceContainer.GetService<IDataEncoderUtil>()
             .Encode(dataBytes, arguments.Password, arguments.UseCompression, arguments.DummyCount, arguments.RandomSeed, arguments.AdditionalPasswordHashIterations);
 
-        int startingPixel = Calculator.CalculateRequiredBitsForContentTable(1);
+        int startingPixel = ServiceContainer.GetService<ICalculator>()
+            .CalculateRequiredBitsForContentTable(1);
 
         int written = -1;
-        var store = new ImageStore(arguments);
+        var store = ServiceContainer.CreateImageStore(arguments);
         using (var stream = store.OpenStream(StreamMode.Write))
         {
             stream.SeekToPixel(startingPixel);

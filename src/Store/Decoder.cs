@@ -27,17 +27,17 @@ internal static class Decoder
 
     private static string DecodeData(IInputArguments arguments)
     {
-        var store = new ImageStore(arguments);
+        var store = ServiceContainer.CreateImageStore(arguments);
         using (var storeStream = store.OpenStream(StreamMode.Read))
         {
-            var contentChunkTable = new ChunkTableReader(storeStream).ReadContentChunkTable();
+            var contentChunkTable = ChunkTableReader.ReadContentChunkTable(storeStream);
 
             using (var memoryStream = new MemoryStream())
             {
                 foreach (int chunkLength in contentChunkTable)
                 {
                     string binary = storeStream.ReadContentChunkFromImage(chunkLength);
-                    byte[] decoded = Injector.Provide<IDataEncoderUtil>()
+                    byte[] decoded = ServiceContainer.GetService<IDataEncoderUtil>()
                         .Decode(binary, arguments.Password, arguments.UseCompression, arguments.DummyCount, arguments.RandomSeed, arguments.AdditionalPasswordHashIterations);
                     memoryStream.Write(decoded);
                 }
