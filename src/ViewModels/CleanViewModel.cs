@@ -44,7 +44,7 @@ public class CleanViewModel : ReactiveObject
     /// </summary>
     public ReactiveCommand<Unit, Unit> CleanImagesCommand { get; }
 
-    private bool isActionEnabled = false;
+    private bool isActionEnabled;
 
     /// <summary>
     /// Gets or sets a value indicating whether the Clean Images button
